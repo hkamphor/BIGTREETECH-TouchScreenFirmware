@@ -70,7 +70,16 @@ void menuMove(void)
     LABEL_MOVE,
     //   icon                          label
     {
-      #ifdef ALTERNATIVE_MOVE_MENU
+      #ifdef ENDER5_MOVE_MENU
+        {ICON_Z_DEC,                   LABEL_Z_INC},
+        {ICON_Y_INC,                   LABEL_Y_DEC},
+        {ICON_Z_INC,                   LABEL_Z_DEC},
+        {ICON_01_MM,                   LABEL_01_MM},
+        {ICON_X_DEC,                   LABEL_X_INC},
+        {ICON_Y_DEC,                   LABEL_Y_INC},
+        {ICON_X_INC,                   LABEL_X_DEC},
+        {ICON_BACK,                    LABEL_BACK},
+      #elif defined (ALTERNATIVE_MOVE_MENU)
         {ICON_Z_DEC,                   LABEL_Z_DEC},
         {ICON_Y_INC,                   LABEL_Y_DEC},
         {ICON_Z_INC,                   LABEL_Z_INC},
@@ -101,7 +110,15 @@ void menuMove(void)
 
   // keys position table
   uint8_t table[TOTAL_AXIS][2] =
-    #ifdef ALTERNATIVE_MOVE_MENU
+    #ifdef ENDER5_MOVE_MENU
+      /*-------*-------*-------*---------*
+       | Z+(0) | Y-(1) | Z-(2) | unit(3) |
+       *-------*-------*-------*---------*
+       | X+(4) | Y+(5) | X-(6) | back(7) |
+       *-------*-------*-------*---------*
+       |X+ X-  |Y+ Y-  |Z+ Z-            */
+       {{4, 6}, {5, 1}, {0, 2}};
+    #elif defined (ALTERNATIVE_MOVE_MENU)
       /*-------*-------*-------*---------*
        | Z-(0) | Y-(1) | Z+(2) | unit(3) |
        *-------*-------*-------*---------*
@@ -145,7 +162,26 @@ void menuMove(void)
 
     switch (key_num)
     {
-      #ifdef ALTERNATIVE_MOVE_MENU
+      #ifdef ENDER5_MOVE_MENU
+        case KEY_ICON_0: storeMoveCmd(Z_AXIS, amount);  break; // Z move down if no invert (increase Z)
+        case KEY_ICON_1: storeMoveCmd(Y_AXIS, -amount); break; // Y move decrease if no invert
+        case KEY_ICON_2: storeMoveCmd(Z_AXIS, -amount); break; // Z move up if no invert (decrease Z)
+
+        case KEY_ICON_3:
+          item_moveLen_index = (item_moveLen_index + 1) % ITEM_MOVE_LEN_NUM;
+          moveItems.items[key_num] = itemMoveLen[item_moveLen_index];
+
+          menuDrawItem(&moveItems.items[key_num], key_num);
+
+          amount = moveLenSteps[item_moveLen_index];
+          break;
+
+        case KEY_ICON_4: storeMoveCmd(X_AXIS, amount);  break;  // X move increase if no invert
+        case KEY_ICON_5: storeMoveCmd(Y_AXIS, amount);  break;  // Y move increase if no invert
+        case KEY_ICON_6: storeMoveCmd(X_AXIS, -amount); break;  // X move decrease if no invert
+
+        case KEY_ICON_7: CLOSE_MENU(); break;
+      #elif defined (ALTERNATIVE_MOVE_MENU)
         case KEY_ICON_0: storeMoveCmd(Z_AXIS, -amount); break;  // Z move down if no invert
         case KEY_ICON_1: storeMoveCmd(Y_AXIS, -amount); break;  // Y move decrease if no invert
         case KEY_ICON_2: storeMoveCmd(Z_AXIS, amount); break;   // Z move up if no invert

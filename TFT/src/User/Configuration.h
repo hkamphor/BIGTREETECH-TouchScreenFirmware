@@ -1397,6 +1397,14 @@
  * of actual printer axis Update the icons from alternate icon folder.
  */
 #define ALTERNATIVE_MOVE_MENU  // Default: uncommented (enabled)
+                               //
+/**
+ * Ender 5 Move Menu Layout
+ * Enable alternative Move Menu Buttons Layout matching the direction
+ * of actual printer axis Update the icons from alternate icon folder.
+ * (This overrides ALTERNATIVE_MOVE_MENU if it is enabled)
+ */
+#define ENDER5_MOVE_MENU // Default: uncommented (enabled)
 
 /**
  * Friendly Z Offset Language
