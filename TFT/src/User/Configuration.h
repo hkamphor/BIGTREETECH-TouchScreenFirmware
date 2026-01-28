@@ -1450,7 +1450,7 @@
  * of actual printer axis Update the icons from alternate icon folder.
  * (This overrides ALTERNATIVE_MOVE_MENU if it is enabled)
  */
-#define ENDER5_MOVE_MENU // Default: uncommented (enabled)
+//#define ENDER5_MOVE_MENU // Default: commented (disabled)
 
 /**
  * Friendly Z Offset Language
